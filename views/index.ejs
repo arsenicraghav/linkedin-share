@@ -71,7 +71,7 @@
        <p>Last Name: <%- payload.userData.lastname %></p>
        <p>Email: <%- payload.userData.email %></p>
     <% } %>
-    <%if (payload.sharedPostUrl && payload.sharedPostUrl.hasOwnProperty('sharedPostUrl') && payload.sharedPostUrl != '#' ) { %>
+    <%if (payload.sharedPostUrl && payload.sharedPostUrl != '#' ) { %>
        <a href="http://<%- payload.sharedPostUrl %>" target="_blank">Post Shared on LinkedIn</a>
     <% } %>
 </div>
