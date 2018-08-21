@@ -1,0 +1,18 @@
+{
+  "name": "linkedin-login-and-share",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.3",
+    "debug": "~2.6.9",
+    "ejs": "^2.6.1",
+    "express": "~4.16.0",
+    "morgan": "~1.9.0",
+    "node-linkedin": "^0.5.6",
+    "pg": "^7.4.3",
+    "url": "^0.11.0"
+  }
+}

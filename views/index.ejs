@@ -1,0 +1,79 @@
+<html>
+<head>
+    <script type="text/javascript" src="//platform.linkedin.com/in.js">
+        api_key:   81w6hptqt3uww4
+        onLoad:    connectedToLinked
+        authorize: true
+        lang:      en_US
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        var userLoggedIn = false;
+        var userData = {};
+        var viaREST = true;
+
+        function connectedToLinked() {
+            console.log('Connected: Linked Platform APIs');
+            if (IN.User.isAuthorized()) {
+                console.log('User is Authorised');
+                userLoggedIn = true;
+            } else {
+                console.log('User is NOT Authorised');
+                userLoggedIn = false;
+            }
+            IN.Event.on(IN, "auth", onAuthSuccess);
+        }
+
+        function onAuthSuccess() {
+            IN.API.Raw("/people/~:(id,firstName,lastName,emailAddress)?format=json").result(onUserDataSuccess).error(onUserDataError);
+        }
+
+        function onUserDataSuccess(data) {
+            userLoggedIn = true;
+            userData = data;
+            console.log(userData);
+            shareContent();
+        }
+
+        function onUserDataError(error) {
+            userLoggedIn = false;
+            console.log(error);
+        }
+
+        function shareContent() {
+            if(document.getElementById('load').value == 0) {
+                $.ajax({
+                    url: "/share/" + userData.id + "/" + userData.firstName + "/" + userData.lastName + "/" + userData.emailAddress , success: onShareSuccess
+                });
+            }else {
+                console.log('post was shared on LinkedIn successfully');
+            }
+        }
+
+        function onShareSuccess(data) {
+            console.log(data.Location);
+            if(data.Location) {
+                window.location.href = data.Location;
+            }else{
+
+            }
+        }
+    </script>
+</head>
+<body>
+<div>
+
+    <script type="in/Login"></script>
+    <input type="hidden" id="load" value="<%- payload.count %>" />
+    <%if (payload.userData != undefined) { %>
+       <p>ID: <%- payload.userData.id %></p>
+       <p>First Name: <%- payload.userData.firstname %></p>
+       <p>Last Name: <%- payload.userData.lastname %></p>
+       <p>Email: <%- payload.userData.email %></p>
+    <% } %>
+    <%if (payload.sharedPostUrl && payload.sharedPostUrl.hasOwnProperty('sharedPostUrl') && payload.sharedPostUrl != '#' ) { %>
+       <a href="http://<%- payload.sharedPostUrl %>" target="_blank">Post Shared on LinkedIn</a>
+    <% } %>
+</div>
+</body>
+</html>
